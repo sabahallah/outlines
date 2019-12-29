@@ -1,0 +1,9 @@
+[user]
+	name = msabahallah
+	email = mahmoud.sabahallah@gmail.com
+[color]
+	ui = auto
+[merge]
+	conflictstyle = diff3
+[core]
+	editor = code --wait
