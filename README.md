@@ -6,5 +6,6 @@ This repo contains some technology outlines that I use in my day-to-day job acti
 
 * [Git Outline](./git-outline.md)
 * [Bash Outline](./bash-outline.md)
+* [Networking for Web Developers](./networking-for-developers.md)
 * Other
   * [Digital Marketing Outline](./digital-marketing-outline.md)
