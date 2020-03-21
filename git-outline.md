@@ -373,6 +373,8 @@ eg: `$ git rebase -i HEAD~3`
 
 `$ git rebase -i 6394dc` where `6394dc` is the hash of the commit just before the first one you want to rewrite from. You can read the whole thing as: Merge all my commits on top of `6394dc`.
 
+`$ git rebase -i --root` squash commits from beginning.
+
 You can use git rebase to combine a sequence of commits into a new base commit. New commits will be replacing the old ones. Rebase is one of two Git utilities that specializes in integrating changes from one branch onto another. The other change integration utility is `$ git merge`. [git rebase vs git merge](https://coderefinery.github.io/git-branch-design/01-rebase/).
 
 * Merge keeps the history whereas rebase rewrites it.
