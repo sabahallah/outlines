@@ -285,6 +285,12 @@ Now we'll start exploring most used linux shell commands.
 * `$ rm -rf /` DON'T RUN THIS ANYTIME, `-r` is for recursive, and `-f` is for force. It deletes everything in your linux system, or at least everything that user account has access to delete.
 * `$ ping 8.8.8.8` Google's public DNS server.
 * `$ bc` simple arithmetic program. Write `quit` to exit.
+* `free -m` get memory size in megabytes.
+* `cat /proc/cpuinfo` get processors details.
+* `cat /etc/*release*` identify the version of your system.
+* `sudo su -` or `sudo -i` switch to root user.
+* `su - mahmoud` switch to another user.
+* `sudo passwd root` change root password in ubuntu.
 
 ### Managing Files and Directories
 
@@ -971,6 +977,7 @@ It reads the process information from the virtual files in `/proc` file system. 
 Useful Commands
 
 * `$ ps -A` or `$ ps -e` view all the active running processes.
+* `$ ps -ef | grep jenkins`, then you can kill the service `kill -9 14048`.
 * `$ ps -T` view all processes associated with this terminal.
 * `$ ps -x` display user's running processes.
 * `$ ps -fu vagrant` display running processes by different user.
