@@ -325,6 +325,166 @@ pipeline {
 
 ***
 
+## Load Jobs from configuration
+
+* copy the job's config.xml to `/var/jenkins_home/jobs/{new_job_name}/`
+* go to GUI > Manage Jenkins > Reload configuration from Disk
+
+[Jenkins master agent model](https://i2.wp.com/digitalvarys.com/wp-content/uploads/2019/05/jenkins-master-slave-config.png?resize=1024%2C563&ssl=1)
+
+```groovy
+node {
+    notify('Started')
+    try {
+        stage 'checkout'  {
+            git 'https://github.com/g0t4/jenkins2-course-spring-boot.git'
+        }
+
+        def project_path = 'spring-boot-samples/spring-boot-sample-atmosphere'
+
+        stage 'build' {
+            dir (project_path){
+                sh 'mvn clean package'
+            }
+
+        }
+
+    } catch(err){
+        notify("Error ${err}")
+        currentBuild.result = "FAILURE"
+    }
+
+    stage 'archive' {
+        step([$class: 'ArtifactArchiver', 
+                artifacts: "target/*.jar", 
+                excludes: null])
+        step([$class: 'JUnitTestArchiver',  testResult: 'target/surefire-reports/TEST-*.xml'])
+    }
+
+    notify('Success')
+}
+
+def notify(status){
+    emailext (
+        to: "mahmoud.sabahallah@gmail.com",
+        subject: "${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+        body: """<p>${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        <p>Check console output at <a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></p>""",
+    )
+}
+```
+
+* `step([$class: 'JUnitTestArchiver',  testResult: 'target/surefire-reports/TEST-*.xml'])` this is to run test reports.
+* Run local mail server, check configuration
+  * `docker run --restart unless-stopped --name mailhog -p 1025:1025 -p 8025:8025 -d mailhog/mailhog`
+  * 8025 is the web ui
+  * 1025 is the smtp server
+* Go back to jenkins and configure Extended E-mail Notification > SMTP server = localhost port = 1025 content html.
+
+```groovy
+def notify(status){
+    emailext (
+      to: "you@gmail.com",
+      subject: "${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+      body: """<p>${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        <p>Check console output at <a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></p>""",
+    )
+}
+```
+
+* Github > clean > compile > test > build > stash > browser tests [chrome, firefox] > Flyweight Approval [user input] > Deployment phase > Smoke test
+Integration phase ->  Flyweight Approval [user input] > Deployment phase
+* `tar -czf jenkins_home_2020_04_07.tgz ~/jenkins_home` archive jenkins home dir, stop jenkins to be safe.
+* `tar -xzf jenkins_home_2020_04_07.tgz` unzip the file.
+
+## Stashing files
+
+When you run a pipeline you can stash files. You'll use this stashing if you're using multiple agents. You won't need to pull the source code again, you just happen to unstash the files then proceed with what you intended to do.
+
+```jenkins
+stash name: 'everything', excludes: 'test-results/**', includes: '**'
+```
+
+```groovy
+stage 'Browser Testing'
+parallel chrome: {
+    runTests("Chrome")
+}, firefox: {
+    runTests("Firefox")
+}, safari: {
+    runTests("Safari")
+}
+
+def runTests(browser){
+    node {
+        sh 'rm -rf *'
+        unstash 'everything'
+        sh "npm run test -- --browsers ${browser}"
+        step([$class: 'JUnitResultArchiver',  testResult: 'test-results/**/test-results.xml'])
+    }
+}
+```
+
+## Manual Approve for Deployment
+
+`input` will pause the pipeline until someone come and approve deployment. Because we don't allocate a node, the `input` will run in a [Flyweight Executor](#executors) which we don't lock with a heavyweight executors.
+
+```groovy
+node {
+    notify('Deploy to staging?')
+}
+
+input 'Deploy to staging?'
+```
+
+## Executors
+
+In jenkins, there are two types of executors, Heavyweight Executors and Flyweight Executors.  
+The one we configure in Jenkins is heavyweight executors. You'll think of that the executors that do the real heavy work involving pulling code, building, deploying, etc. These runs on master or any agent node.
+
+Flyweight Executors used if you don't allocate a node in a pipeline, like `input 'Deploy to staging?'` and it runs only in a master node and used to execute code which outside a node allocation. These Flyweight Executors don't overlap with the capacity we specify for heavyweight executors. There is no limit for Flyweight Executors unlike the heavy weight executors.
+
+## Deployment
+
+If multiple pipelines of the same type are executing, `concurrency: 1` will be helpful so only one pipeline will do the deployment which make sense, newest pipeline will do the work, rest will be canceled.
+
+```groovy
+node {
+    notify('Deploy to staging?')
+}
+
+input 'Deploy to staging?'
+stage name: 'Deploy to staging', concurrency: 1
+node {
+
+    // do whatever you want
+    sh "echo '<h1>${env.BUILD_DISPLAY_NAME}</h1>' >> app/index.html"
+
+    // run a docker-compose // or you may want to run ansible playbook
+    sh 'docker-compose up -d --build'
+
+    notify('Deployment Completed')
+}
+
+node {
+    notify('Deploy to production?')
+}
+
+input 'Deploy to production?'
+stage name: 'Deploy to prod', concurrency: 1
+node {
+
+    // do whatever you want
+    sh "echo '<h1>${env.BUILD_DISPLAY_NAME}</h1>' >> app/index.html"
+
+    // run a docker-compose // or you may want to run ansible playbook
+    sh 'docker-compose up -d --build'
+
+    notify('Deployment Completed')
+}
+
+```
+
 ## Jenkins Blue Ocean
 
 [Jenkins Blue Ocean](https://jenkins.io/projects/blueocean/) is a new GUI for jenkins. It also has a pipeline editor for declarative pipelines. You can install "Blue Ocean" Plugin then from home page "Open Blue Ocean".
@@ -335,6 +495,7 @@ pipeline {
 
 * Use Pipeline instead of Maven Job.
 * When using pipeline, always use agents, it will take all the heavy works. If you need a stage to be run on the master, put agent to none, eg: `agent none`
+
     ```Jenkinsfile
     pipeline {
         agent none
@@ -343,6 +504,7 @@ pipeline {
         }
     }
     ```
+
 * Jenkins has shared libraries, if you have shared libraries between pipelines.
 * You can build your own GUI views.
 * In Views, you can install `Build Monitor` view, it's a nice way to visualize your builds.
