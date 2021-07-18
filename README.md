@@ -5,8 +5,9 @@ This repo contains some technology outlines that I use in my day-to-day job acti
 ## Table of Content
 
 - Frontend Development
-  - [CSS Outlines](./css-outline.md)
-  - [Typescript Outlines](./typescript-outline.md)
+  - [CSS Outline](./css-outline.md)
+  - [Typescript Outline](./typescript-outline.md)
+  - [Web Design Outline](./web-design-outline.md)
 - [Git Outline](./git-outline.md)
 - [Bash Outline](./bash-outline.md)
 - [Networking for Web Developers](./networking-for-developers.md)

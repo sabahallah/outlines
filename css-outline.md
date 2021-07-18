@@ -309,7 +309,7 @@ You can link your css file in 3 different ways:
   ```
 
 - `writing-mode: vertical-rl;` will transform the text to be vertically aligned.
-  ![writing mode vertical rl](../metadata/writing-mode-vertical-rl.JPG)
+  ![writing mode vertical rl](./metadata/css/writing-mode-vertical-rl.JPG)
 
 ## Images
 
@@ -1110,7 +1110,7 @@ Changing an element's position to relative does not remove it from the normal fl
 </body>
 ```
 
-![relative position](../metadata/relative-postition.JPG)
+![relative position](./metadata/css/relative-postition.JPG)
 
 ### Absolute Positioning
 
@@ -1196,7 +1196,7 @@ We use the `float` property to put **block** elements side by side.
 </body>
 ```
 
-![float property](../metadata/float-property.JPG)
+![float property](./metadata/css/float-property.JPG)
 
 The `clear` property is the counterpart of the `float` property [Ensures that an element self-clears its children]
 
@@ -2255,7 +2255,7 @@ Zero values for pixel sizes, such as `width: 0px; height: 0px;` removes that ele
   </div>
   ```
 
-  ![flex shrink](../metadata/flex-shrink.PNG)
+  ![flex shrink](./metadata/css/flex-shrink.PNG)
 
 - `flex-basis: auto | <length>` width of an item. `flex-basis: 20%;` 20% of its container.  
   The `flex-basis` property specifies the initial size of the item before CSS makes adjustments with `flex-shrink` or `flex-grow`. The value `auto` sizes items based on the content.
