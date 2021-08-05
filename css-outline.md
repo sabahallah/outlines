@@ -1810,6 +1810,8 @@ We have different CSS architecture strategies:
 - OOCSS (Object Oriented CSS)
 - SMACSS (Scalable and Modular Architecture for CSS)
 - 7-1 pattern (by google)
+- OOCSS
+- Atomic Design
 
 ### BEM (Block Element Modifier)
 
@@ -1843,13 +1845,14 @@ We have different CSS architecture strategies:
 
 Use this in larger projects it will be handy, for small projects you can use one scss file.
 
-![sass files structure](metadata/css\sass-files-structure.PNG)
+![sass files structure](./metadata/css/sass-files-structure.PNG)
+![7 to 1 css architecture](./metadata/css/7-1-css-architecture.PNG)
 
 ## SASS
 
 SASS is a css preprocessor, other css pre-processors are LESS and STYLUS.
 
-![sass files structure](metadata/css\sass.PNG)
+![sass files structure](./metadata/css/sass.PNG)
 
 Files with **.sass** syntax (use indentation without curly braces)  
 Files with **.scss** syntax (sassy css) (with curly braces)
@@ -2332,7 +2335,7 @@ Zero values for pixel sizes, such as `width: 0px; height: 0px;` removes that ele
 - No Need for Bootstrap anymore.
 - It requires a whole new mindset, whole new thinking about design, html and CSS.
 
-![](./metadata/css/grid-layout-properties.png)
+![grid layout properties](./metadata/css/grid-layout-properties.png)
 
 - [Reference on codepen](https://codepen.io/jonasschmedtmann/pen/ppzVZo)
 - Grid Components
