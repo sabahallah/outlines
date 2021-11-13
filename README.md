@@ -10,6 +10,9 @@ This repo contains some technology outlines that I use in my day-to-day job acti
   - [Networking for Web Developers](./networking-for-developers.md)
 - Frontend Development
   - [CSS Outline](./css-outline.md)
+  - Javascript
+    - [Javascript Outline 1](./javascript-outline-1.md)
+    - [Javascript Outline 2](./javascript-outline-2.md)
   - [Typescript Outline](./typescript-outline.md)
   - [Web Design Outline](./web-design-outline.md)
   - Automation, Tools and Standards
@@ -27,4 +30,5 @@ This repo contains some technology outlines that I use in my day-to-day job acti
   - [SonarQube Outline](./sonarqube-outline.md)
   - [YAML Outline](./yaml-outline.md)
 - Other
+  - [Useful Tools, Resources and Libraries](./tools-resources-and-libraries.md)
   - [Digital Marketing Outline](./digital-marketing-outline.md)
