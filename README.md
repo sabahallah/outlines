@@ -6,6 +6,7 @@ This repo contains some technology outlines that I use in my day-to-day job acti
 
 - Developer Essentials
   - [Git Outline](./git-outline.md)
+  - [Security Outlines](./security-outlines.md)
   - [Bash Outline](./bash-outline.md)
   - [Networking for Web Developers](./networking-for-developers.md)
 - Frontend Development
